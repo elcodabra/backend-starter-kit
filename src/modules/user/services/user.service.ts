@@ -1,10 +1,9 @@
 import { Injectable } from '@nestjs/common'
 import { InjectRepository } from '@nestjs/typeorm'
 
-import { In, Raw, Repository } from 'typeorm'
+import { Repository } from 'typeorm'
 
 import { BaseService } from '../../common/services/base.service'
-import { Place } from '../../../entity/place'
 import { User, UserStatus } from '../../../entity/user'
 import { UserInput, UserRoles, UsersArgs } from '../dto/user.dto'
 import { InviteInput, SignupInput } from '../../auth/dto/auth.dto'
@@ -17,8 +16,6 @@ export class UserService extends BaseService {
   constructor(
     @InjectRepository(User)
     private readonly userRepository: Repository<User>,
-    @InjectRepository(Place)
-    private readonly placeRepository: Repository<Place>,
     @InjectRepository(ResetPasswordToken)
     private readonly resetPasswordTokenRepository: Repository<ResetPasswordToken>,
   ) {
@@ -30,11 +27,13 @@ export class UserService extends BaseService {
   }
 
   async findOneById(id: string): Promise<Nullable<User>> {
+    // @ts-ignore
     const user = await this.userRepository.findOne(id)
     return user ?? null
   }
 
   async findOneByEmail(email: string): Promise<Nullable<User>> {
+    // @ts-ignore
     const user = await this.userRepository.findOne({ email })
     return user ?? null
   }
@@ -101,6 +100,7 @@ export class UserService extends BaseService {
   }
 
   async remove(id: string) {
+    // @ts-ignore
     const user = await this.userRepository.findOne(id)
     if (!user) {
       return null
@@ -130,61 +130,6 @@ export class UserService extends BaseService {
     })
   }
 
-  async getManagers({ placeId, ...args }: UsersArgs): Promise<[User[], number]> {
-    const query = {
-      role: UserRoles.manager,
-      places: undefined,
-      ...args,
-    }
-    if (placeId) {
-      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-      // @ts-ignore
-      query.places = Raw((alias) => `${alias} @> '{"${placeId}"}'`)
-    }
-    return this.userRepository.findAndCount(this.getFindAllQuery(query))
-  }
-
-  async getStaffs({ placeId, ...args }: UsersArgs): Promise<[User[], number]> {
-    const query = {
-      role: UserRoles.staff,
-      places: undefined,
-      ...args,
-    }
-    if (placeId) {
-      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-      // @ts-ignore
-      query.places = Raw((alias) => `${alias} @> '{"${placeId}"}'`)
-    }
-    return this.userRepository.findAndCount(this.getFindAllQuery(query))
-  }
-
-  async getConsumers({ placeId, ...args }: UsersArgs): Promise<[User[], number]> {
-    const query = {
-      role: UserRoles.consumer,
-      places: undefined,
-      ...args,
-    }
-    if (placeId) {
-      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-      // @ts-ignore
-      query.places = Raw((alias) => `${alias} @> '{"${placeId}"}'`)
-    }
-    return this.userRepository.findAndCount(this.getFindAllQuery(query))
-  }
-
-  async getPlace(place: string): Promise<undefined | Place> {
-    return this.placeRepository.findOne(place)
-  }
-
-  async getPlaces(places: string[]): Promise<Place[]> {
-    if (places.length === 0) {
-      return []
-    }
-    return this.placeRepository.find({
-      id: In(places)
-    })
-  }
-
   async requestResetPassword(
     userId: string,
     token: string
@@ -201,6 +146,7 @@ export class UserService extends BaseService {
   async getResetTokenObject(
     token: string
   ): Promise<Nullable<ResetPasswordToken>> {
+    // @ts-ignore
     return this.resetPasswordTokenRepository.findOne({ resetToken: token })
   }
 
@@ -208,6 +154,7 @@ export class UserService extends BaseService {
     userId: string,
     password: string
   ): Promise<Nullable<User>> {
+    // @ts-ignore
     const user = await this.userRepository.findOne({ id: userId })
     if (!user) {
       return null

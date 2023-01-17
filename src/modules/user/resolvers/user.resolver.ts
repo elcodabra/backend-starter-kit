@@ -55,60 +55,6 @@ export class UserResolver {
     return this.userService.findOneById(id)
   }
 
-  @Query(() => UsersResult)
-  async getManagers(@Args() args: UsersArgs, @CurrentUser() user: User) {
-    if (user.role !== UserRoles.admin) {
-      return {
-        data: [],
-        count: 0
-      }
-    }
-    const [data, count] = await this.userService.getManagers(args)
-    return {
-      data,
-      count
-    }
-  }
-
-  @Query(() => UsersResult)
-  async getConsumers(@Args() args: UsersArgs, @CurrentUser() user: User) {
-    if (user.role !== UserRoles.admin && user.role !== UserRoles.manager) {
-      return {
-        data: [],
-        count: 0
-      }
-    }
-
-    if (user.role === UserRoles.manager && (!args.placeId || (user.places || []).indexOf(args.placeId) === -1)) {
-      return {
-        data: [],
-        count: 0
-      }
-    }
-
-    const [data, count] = await this.userService.getConsumers(args)
-    return {
-      data,
-      count
-    }
-  }
-
-  @Query(() => UsersResult)
-  async getStaffs(@Args() args: UsersArgs, @CurrentUser() user: User) {
-    if (user.role !== UserRoles.admin && user.role !== UserRoles.manager) {
-      return {
-        data: [],
-        count: 0
-      }
-    }
-
-    const [data, count] = await this.userService.getStaffs(args)
-    return {
-      data,
-      count
-    }
-  }
-
   @Query(() => User)
   async getMe(@CurrentUser() user: User) {
     return user

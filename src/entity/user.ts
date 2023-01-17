@@ -14,8 +14,6 @@ import { UserRoles } from '../modules/user/dto/user.dto'
 import { hash } from '../lib/passwordHasher'
 
 import { DefaultEntity } from './default/defaultEntity'
-import { Address } from './address'
-import { Order } from './order'
 
 export enum UserStatus {
   pending = 'pending',
@@ -79,14 +77,6 @@ export class User extends DefaultEntity {
   @Exclude()
   @Column({ name: 'password_hash', nullable: true })
   passwordHash: string
-
-  // Relations
-  @Field(() => [Address], { nullable: true })
-  @OneToMany(() => Address, address => address.place)
-  addresses: Address[]
-
-  @OneToMany(() => Order, order => order.placeId)
-  orders?: Order[]
 
   @BeforeInsert()
   hashPassword() {

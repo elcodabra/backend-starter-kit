@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common'
-import { GqlAuthGuard } from "modules/auth/gqlauth.guard";
+import { GqlAuthGuard } from 'modules/auth/gqlauth.guard'
 
 @Injectable()
 export class ApplyUser extends GqlAuthGuard {

@@ -27,14 +27,20 @@ export class UserService extends BaseService {
   }
 
   async findOneById(id: string): Promise<Nullable<User>> {
-    // @ts-ignore
-    const user = await this.userRepository.findOne(id)
+    const user = await this.userRepository.findOne({
+      where: {
+        id,
+      }
+    })
     return user ?? null
   }
 
   async findOneByEmail(email: string): Promise<Nullable<User>> {
-    // @ts-ignore
-    const user = await this.userRepository.findOne({ email })
+    const user = await this.userRepository.findOne({
+      where: {
+        email,
+      }
+    })
     return user ?? null
   }
 
@@ -93,8 +99,11 @@ export class UserService extends BaseService {
   }
 
   async remove(id: string) {
-    // @ts-ignore
-    const user = await this.userRepository.findOne(id)
+    const user = await this.userRepository.findOne({
+      where: {
+        id,
+      }
+    })
     if (!user) {
       return null
     }
@@ -137,18 +146,24 @@ export class UserService extends BaseService {
   }
 
   async getResetTokenObject(
-    token: string
+    resetToken: string
   ): Promise<Nullable<ResetPasswordToken>> {
-    // @ts-ignore
-    return this.resetPasswordTokenRepository.findOne({ resetToken: token })
+    return this.resetPasswordTokenRepository.findOne({
+      where: {
+        resetToken,
+      }
+    })
   }
 
   async resetPassword(
     userId: string,
     password: string
   ): Promise<Nullable<User>> {
-    // @ts-ignore
-    const user = await this.userRepository.findOne({ id: userId })
+    const user = await this.userRepository.findOne({
+      where: {
+        id: userId,
+      }
+    })
     if (!user) {
       return null
     }

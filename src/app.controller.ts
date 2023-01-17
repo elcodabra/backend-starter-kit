@@ -1,12 +1,17 @@
-import { Controller, Get } from '@nestjs/common';
-import { AppService } from './app.service';
+import { Get, Controller, Req } from '@nestjs/common'
+import { Request } from 'express'
 
-@Controller()
+@Controller('status')
 export class AppController {
-  constructor(private readonly appService: AppService) {}
+  @Get('/')
+  health(): string {
+    return 'OK'
+  }
 
-  @Get()
-  getHello(): string {
-    return this.appService.getHello();
+  @Get('/client')
+  client(@Req() req: Request): string[] {
+    console.log('req.socket.remoteAddress=', req.socket.remoteAddress)
+    console.log('req.ip=', req.ip)
+    return [req.socket.remoteAddress || '', req.ip]
   }
 }

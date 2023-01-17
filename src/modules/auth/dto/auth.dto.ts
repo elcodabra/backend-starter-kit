@@ -144,9 +144,6 @@ export class InviteInput {
   @Field()
   role: string
 
-  @Field(() => [ID])
-  places: string[]
-
   @Field()
   invitedBy: string
 

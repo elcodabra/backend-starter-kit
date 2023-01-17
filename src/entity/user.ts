@@ -4,7 +4,6 @@ import {
   Column,
   Entity,
   Unique,
-  OneToMany,
   PrimaryGeneratedColumn,
   BeforeInsert
 } from 'typeorm'
@@ -57,22 +56,6 @@ export class User extends DefaultEntity {
   @Field({ defaultValue: UserStatus.pending })
   @Column({ name: 'status', default: UserStatus.pending })
   status: string
-
-  @Column({
-    name: 'places',
-    array: true,
-    nullable: true,
-    type: 'varchar'
-  })
-  @Field(() => [ID], { nullable: true })
-  places?: string[] | null
-
-  @Column({
-    name: 'stripe_customer_id',
-    nullable: true,
-    type: 'character varying'
-  })
-  stripeCustomerId?: string
 
   @Exclude()
   @Column({ name: 'password_hash', nullable: true })

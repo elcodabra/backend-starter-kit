@@ -50,13 +50,6 @@ export class UserService extends BaseService {
     user = await this.userRepository.save(
       this.userRepository.create({ ...data, ...extend })
     )
-    if (user.role === UserRoles.manager) {
-      /*
-      const stripe = await this.stripeService.createCustomer(user)
-      user.stripeCustomerId = stripe.id
-      user = await this.userRepository.save(user)
-      */
-    }
     return user
   }
 

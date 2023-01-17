@@ -1,0 +1,115 @@
+# ------------------------------------------------------
+# THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
+# ------------------------------------------------------
+
+type UsersResult {
+  data: [User!]!
+  count: Int!
+}
+
+type User {
+  id: ID!
+  email: String!
+  firstName: String
+  lastName: String
+  name: String
+  phone: String
+  role: String!
+  status: String!
+}
+
+type Entity {
+  id: ID!
+}
+
+type AuthResponse {
+  refreshToken: String
+  jwtToken: String
+  status: String
+}
+
+type ForgotPasswordResponse {
+  token: String!
+  userId: String!
+}
+
+type Query {
+  users(page: Int = 1, skip: Int = 0, limit: Int = 25, sort: [String!], role: String, search: String): UsersResult!
+  user(id: ID!): User!
+  getMe: User!
+  customerCount: Float!
+  me: User!
+}
+
+type Mutation {
+  inviteUser(data: UserInviteInput!): User!
+  createUser(data: UserCreationInput!): User!
+  saveUser(data: UserInput!): User!
+  saveUsers(data: [UserInput!]!): [User!]!
+  removeUser(id: ID!): Entity!
+  signin(signinInput: SigninInput!): AuthResponse!
+  confirmInvite(data: ConfirmInviteInput!): AuthResponse!
+  exchangeRefreshToken(data: ExchangeRefreshTokenInput!): AuthResponse!
+  signup(signupInput: SignupInput!): AuthResponse!
+  forgotPassword(data: ForgotPasswordInput!): ForgotPasswordResponse!
+  resetPassword(data: ResetPasswordInput!): AuthResponse!
+}
+
+input UserInviteInput {
+  email: String!
+  firstName: String
+  lastName: String
+  role: String
+}
+
+input UserCreationInput {
+  email: String!
+  password: String!
+  phone: String
+  role: String!
+  firstName: String
+  lastName: String
+}
+
+input UserInput {
+  id: ID!
+  email: String
+  role: String
+  firstName: String
+  lastName: String
+}
+
+input SigninInput {
+  email: String!
+  password: String!
+}
+
+input ConfirmInviteInput {
+  email: String!
+  password: String!
+}
+
+input ExchangeRefreshTokenInput {
+  refreshToken: String!
+  userId: String!
+}
+
+input SignupInput {
+  email: String!
+  password: String!
+  phone: String
+  firstName: String
+  lastName: String
+  status: String
+}
+
+input ForgotPasswordInput {
+  email: String
+  phone: String
+}
+
+input ResetPasswordInput {
+  token: String!
+  password: String!
+  confirmPassword: String
+}

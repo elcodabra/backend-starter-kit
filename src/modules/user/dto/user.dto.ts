@@ -15,7 +15,6 @@ import { BaseArgs } from '../../common/dto/base.args'
 export enum UserRoles {
   consumer = 'consumer',
   manager = 'manager',
-  staff = 'staff',
   admin = 'admin'
 }
 
@@ -28,10 +27,6 @@ export class UsersArgs extends BaseArgs {
   @Field(() => String, { nullable: true })
   @IsOptional()
   search?: string
-
-  @Field(() => ID, { nullable: true })
-  @IsOptional()
-  placeId?: string | null
 }
 
 @ObjectType()
@@ -57,10 +52,6 @@ export class UserInviteInput {
   @Field({ nullable: true })
   @IsOptional()
   lastName?: string
-
-  @Field(() => ID)
-  @IsNotEmpty()
-  placeId: string
 
   @Field({ nullable: true })
   @IsOptional()
@@ -94,10 +85,6 @@ export class UserCreationInput {
   @Field({ nullable: true })
   @IsOptional()
   lastName?: string
-
-  @Field(() => [ID], { nullable: true })
-  @IsOptional()
-  places?: string[]
 }
 
 @InputType()
@@ -128,13 +115,6 @@ export class UserInput {
 
   @IsOptional()
   phone?: string
-
-  @IsOptional()
-  stripeCustomerId?: string
-
-  @Field(() => [ID], { nullable: true })
-  @IsOptional()
-  places?: string[] | null
 
   @IsOptional()
   status?: string

@@ -72,20 +72,16 @@ export class UserResolver {
   @Mutation(() => User)
   async inviteUser(
     @Args({ name: 'data', type: () => UserInviteInput })
-      { placeId, role = UserRoles.consumer, ...data }: UserInviteInput,
+      { role = UserRoles.consumer, ...data }: UserInviteInput,
     @CurrentUser() current: User
   ) {
     const user = await this.userService.findOneByEmail(data.email)
     if (user) {
-      return this.userService.save({
-        ...user,
-        places: [...user.places || [], placeId]
-      })
+      return this.userService.save(user)
     }
     return this.userService.invite({
       ...data,
       role,
-      places: [placeId],
       invitedBy: current.id,
       invitedDate: new Date(),
     })
